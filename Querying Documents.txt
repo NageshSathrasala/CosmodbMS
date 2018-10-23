@@ -1,0 +1,126 @@
+--Both below quries will pefrom same task however in the first script we are aliasing the current collections to mystore and in 2nd as c
+SELECT * from mystore
+
+SELECT * from c
+
+--To get perticular value or peoperty from collection
+SELECT mystore.name FROM mystore
+
+--This will change the document to array and it works only when we are fetching only one value
+SELECT VALUE mystore.name FROM mystore
+
+
+SELECT m.name,
+    m.address.location,
+    m.address.location.city
+FROM m
+
+SELECT m.name,
+    a.location,
+    l.city
+FROM m
+JOIN  m.address a
+JOIN a.location l
+
+SELECT *
+FROM m.address.location
+
+
+
+-- Alias the subset to filter
+-- within the subset
+SELECT *
+ FROM c.address.location AS l
+ WHERE
+  l.stateProvinceName IN
+   ('Florida', 'Illinois')
+
+
+--Multiple joins and Collesce
+SELECT
+ c.id,
+ ch.givenName,
+ ch.grade
+FROM c 
+JOIN ch IN c.children
+JOIN p IN ch.pets
+
+SELECT
+ c.id,
+ ch.givenName ?? ch.firstName,
+ ch.grade
+FROM c 
+JOIN ch IN c.children
+JOIN p IN ch.pets
+
+--String Concatination
+SELECT VALUE
+ c.name || ', ' ||  c.address.contryregioname ||  ' ,' || c.address.location.city
+FROM c
+
+
+-- Range queries
+SELECT VALUE c.name
+ FROM c
+ WHERE
+  c.name >= 'A' AND
+  c.name <= 'K'
+
+SELECT VALUE c.name
+ FROM c
+ WHERE
+  c.name BETWEEN 'A' AND 'K'
+
+
+-- Can't count across
+-- partitions without VALUE
+SELECT COUNT(1) AS USCount
+FROM c
+WHERE
+ c.address.countryRegionName =
+  'United States'
+
+-- Use VALUE for cross
+-- partition aggregates
+SELECT VALUE COUNT(1)
+FROM c
+WHERE
+ c.address.countryRegionName =
+  'United States'
+
+-- Total families
+SELECT VALUE COUNT(c)
+FROM c
+
+-- Lowest grade
+SELECT VALUE
+ MIN(ch.grade)
+FROM ch IN c.children
+
+-- Highest grade
+SELECT VALUE
+ MAX(ch.grade)
+FROM ch IN c.children
+
+-- Total children
+SELECT VALUE
+ SUM(ARRAY_LENGTH(c.children))
+FROM c
+
+--IIF or Ternary ?
+SELECT
+    c.name,
+    c.address.contryregioname,
+    (c.address.contryregioname = "United States" ? "USD" : "CAD") As Currency
+FROM c
+where c.address.contryregioname IN ( "United States", "Canada")
+
+--Nested IIF or Ternary ?
+SELECT
+    c.name,
+    c.address.contryregioname,
+    (c.address.contryregioname = "United States" ? "USD" : (
+        c.address.contryregioname = "Canada"  ? "CAD" : "EUR"
+    )) As Currency
+FROM c
+where c.address.contryregioname IN ( "United States", "Canada", "France")
