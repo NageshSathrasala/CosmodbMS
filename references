@@ -7,3 +7,6 @@ http://www.microsoft.com/en-us/download/details.aspx?id=46436
 
 Aventureworks DB download link
 https://www.microsoft.com/en-us/download/details.aspx?id=49502
+
+DocDB JavaScript server API for intelisense
+https://github.com/Azure/azure-cosmosdb-js-server/blob/master/utils/DocDbWrapperScript.js
