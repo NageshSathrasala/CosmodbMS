@@ -1,0 +1,21 @@
+{
+    "InvoiceNumber": "GBPGB011",
+    "TotalSalePrice": 89000,
+    "SaleDate": "2015-04-30T00:00:00",
+    "CustomerName": "Wonderland Wheels",
+    "IsCreditRisk": false,
+    "IsReseller": true,
+    "City": "London",
+    "PostCode": "E7 4BR",
+    "CountryName": "United Kingdom",
+    "CountryISO3": "GBR       ",
+    "LineitemNumber": 2,
+    "MakeName": "Bentley",
+    "ModelName": "Flying Spur",
+    "SalePrice": 80500,
+    "LineItemDiscount": 500,
+    "Cost": 64400,
+    "RepairsCost": 500,
+    "PartsCost": 750,
+    "TransportInCost": 750
+}

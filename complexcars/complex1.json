@@ -1,0 +1,46 @@
+{
+    "InvoiceNumber": "GBPGB011",
+    "TotalSalePrice": 89000,
+    "SaleDate": "2015-04-30T00:00:00",
+    "Customer": {
+        "Name": "Wonderland Wheels",
+        "CreditRisk": false,
+        "Reseller": true
+    },
+    "Address": {
+        "Town": "London",
+        "PostCode": "E7 4BR",
+        "CountryName": "United Kingdom",
+        "CountryISO": "GBR       "
+    },
+    "Salesdetails": [
+        {
+            "LineItem": 1,
+            "Make": "Porsche",
+            "Model": "944",
+            "SellingPrice": 8500,
+            "LineItemDiscount": "50",
+            "PurchaseCost": 6800,
+            "RepairsCost": 250,
+            "PartsCost": 225,
+            "TransportInCost": 150
+        },
+        {
+            "LineItem": 2,
+            "Make": "Bentley",
+            "Model": "Flying Spur",
+            "SellingPrice": 80500,
+            "LineItemDiscount": 500,
+            "PurchaseCost": 64400,
+            "RepairsCost": 500,
+            "PartsCost": 750,
+            "TransportInCost": 750
+        }
+    ],
+    "id": "f58a70dc-f107-d3ba-acda-02f39893eb44",
+    "_rid": "molfALBK0z8BAAAAAAAAAA==",
+    "_self": "dbs/molfAA==/colls/molfALBK0z8=/docs/molfALBK0z8BAAAAAAAAAA==/",
+    "_etag": "\"00000000-0000-0000-c2fa-09169cb001d4\"",
+    "_attachments": "attachments/",
+    "_ts": 1549993225
+}

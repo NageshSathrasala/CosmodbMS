@@ -1,0 +1,40 @@
+// Create vertices
+g.addV('customer')
+.property('id', 'Ram')
+.property('phno','123')
+.property('age','25')
+
+g.addV('customer')
+.property('id', 'Rashul')
+.property('phno','103')
+.property('age','28')
+
+g.addV('product')
+.property('id', 'productA')
+.property('desc','mobilephone')
+.property('model','iphone')
+
+g.addV('product')
+.property('id', 'productB')
+.property('desc','mobileasc')
+.property('model','iphone pouch')
+
+
+// Create edges
+g.V().has('id', 'Ram').addE('purchased').to(g.V().has('id', 'productA'))
+g.V().has('id', 'Ram').addE('purchased').to(g.V().has('id', 'productB'))
+g.V().has('id', 'Rashul').addE('purchased').to(g.V().has('id', 'productA'))
+
+//who brought iphone
+g.V('id', 'productA').in('purchased')
+g.V('id', 'productB').in('purchased')
+
+//what are all products ram has brought
+g.V('id', 'Ram').out()
+
+//who brought iphone
+g.V().inE('purchased').has('productA', true).inV()
+
+g.V().inE().has('productA', true).inV()
+
+
