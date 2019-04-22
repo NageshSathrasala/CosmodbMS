@@ -24,6 +24,12 @@ AccountEndpoint=https://3e3bab43-0ee0-4-231-b9ee.documents.azure.com:443/;Accoun
 Aventureworks DB download link
 https://www.microsoft.com/en-us/download/details.aspx?id=49502
 
+RUs Calculator
+https://www.documentdb.com/capacityplanner
+
+Sample doucment generator
+https://www.generatedata.com/
+
 DocDB JavaScript server API for intelisense
 https://github.com/Azure/azure-cosmosdb-js-server/blob/master/utils/DocDbWrapperScript.js
 
