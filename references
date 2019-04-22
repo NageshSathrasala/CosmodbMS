@@ -2,7 +2,7 @@ Try 1 month Azure cosmosDB
 https://azure.microsoft.com/en-in/try/cosmosdb/
 
 Partition Key on stores Collection of ADW DB.
-/address.countryRegionName
+/address/countryRegionName
 
 Data migration tool download
 http://www.microsoft.com/en-us/download/details.aspx?id=46436
