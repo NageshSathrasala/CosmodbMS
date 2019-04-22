@@ -4,6 +4,9 @@ https://azure.microsoft.com/en-in/try/cosmosdb/
 Partition Key on stores Collection of ADW DB.
 /address/countryRegionName
 
+Emulator: 
+https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
+
 Data migration tool download
 http://www.microsoft.com/en-us/download/details.aspx?id=46436
 
