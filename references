@@ -18,6 +18,9 @@ PWD: TestMS
 #Migration using command:
 /s:SQL /s.ConnectionString:Server=win10;Database=WideWorldImporters;Trusted_Connection=True; /s.Query:"SELECT [CountryID]       ,[CountryName]       ,[FormalName]       ,[IsoAlpha3Code]       ,[IsoNumericCode]       ,[CountryType]       ,[LatestRecordedPopulation]       ,[Continent]       ,[Region]       ,[Subregion]       ,[Border]       ,[LastEditedBy]       ,[ValidFrom]       ,[ValidTo]   FROM [WideWorldImporters].[Application].[Countries]" /t:DocumentDB /t.ConnectionString:AccountEndpoint=https://cosmosnag.documents.azure.com:443/;AccountKey=Bhsj1SkHNOz8Q0t3lXItqelnNuQW54NCgte9rp4qXosPYVTTordNFjaokj79il7B5j9LV3G6AR5G1S3y6Isgfg==;Database=WWI; /t.CollectionThroughput:400 /t.Collection:contries /t.PartitionKey:/subregion
 
+Connection string for CosmosDB
+AccountEndpoint=https://3e3bab43-0ee0-4-231-b9ee.documents.azure.com:443/;AccountKey=ogNXZ9QKjAn71YoNEeAMUnpyXDhEapwBLojLNOjUp5DxWQSSSc3ZDj3G73E8K30Tx774CSI1InQdrkPMNQtvLw==;Database=ADW
+
 Aventureworks DB download link
 https://www.microsoft.com/en-us/download/details.aspx?id=49502
 
