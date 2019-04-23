@@ -112,7 +112,7 @@ JOIN p IN ch.pets
 
 --String Concatination
 SELECT VALUE
- c.name || ', ' ||  c.address.contryregioname ||  ' ,' || c.address.location.city
+ c.name || ', ' ||  c.address.countryRegionName ||  ' ,' || c.address.location.city
 FROM c
 
 
@@ -167,17 +167,17 @@ FROM c
 --IIF or Ternary ?
 SELECT
     c.name,
-    c.address.contryregioname,
-    (c.address.contryregioname = "United States" ? "USD" : "CAD") As Currency
+    c.address.countryRegionName,
+    (c.address.countryRegionName = "United States" ? "USD" : "CAD") As Currency
 FROM c
-where c.address.contryregioname IN ( "United States", "Canada")
+where c.address.countryRegionName IN ( "United States", "Canada")
 
 --Nested IIF or Ternary ?
 SELECT
     c.name,
-    c.address.contryregioname,
-    (c.address.contryregioname = "United States" ? "USD" : (
-        c.address.contryregioname = "Canada"  ? "CAD" : "EUR"
+    c.address.countryRegionName,
+    (c.address.countryRegionName = "United States" ? "USD" : (
+        c.address.countryRegionName = "Canada"  ? "CAD" : "EUR"
     )) As Currency
 FROM c
-where c.address.contryregioname IN ( "United States", "Canada", "France")
+where c.address.countryRegionName IN ( "United States", "Canada", "France")
