@@ -1,0 +1,14 @@
+1. Add End point and Master key to config file.
+2. Add system.configuration reference to read values from app.config file.
+3. Add cosmodb .net sdk from Nuget packages, which can be accessed by right clicking project in solution explorer and select Manage NuGet packages.
+4. Search for Microsoft.Azure.DocumentDB and select the .Net client Library for for Azure Cosmos DB DocumentDB (SQL) API and intall.
+5. Add below references minimum and others as required:
+using System.Configuration;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
+using System.Diagnostics;
+using Newtonsoft.Json;
+
+6. Create URI's for your database and collection
+7. Establish connection to the CosmosDB database with the help of endpoint and master key part of app config file.
