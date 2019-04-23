@@ -1,7 +1,7 @@
 --On Cars DB
 --Select compelted collection
 select * from c
--- Note that you can use any alias to your collection however while executing any query it is necessary that scope is to the collection from which you want to bring data
+-- Note that you can use any alias to your collection however while executing any query it is necessary that scope is set to the collection from which you want to bring data
 
 --To get sepcific properties from a docuemnts
 SELECT simpleCars.InvoiceNumber, simpleCars.TotalSalePrice FROM simpleCars
@@ -9,13 +9,13 @@ SELECT simpleCars.InvoiceNumber, simpleCars.TotalSalePrice FROM simpleCars
 --Same result can be achieved with the help of Aliasing
 SELECT s.InvoiceNumber, s.TotalSalePrice FROM simpleCars s
 
---Importent point to not here is in any case either we have to use Alias or collection name used in the select query to get the relust. Below query will not return an error
+--Importent point to not here is in any case either we have to use Alias or collection name used in the select query to get the relust. Below query will  return an error
 SELECT InvoiceNumber, TotalSalePrice FROM simpleCars s
 
 -- If you want alias a property you can and AS key word is optional in any case
 SELECT s.InvoiceNumber, s.TotalSalePrice AS Price FROM simpleCars s
 
---Format of the data returned as it is stored in JSON and these selects will also let you do arthimetic operations, we will see more in upcoming seesions
+--Format of the data returned as it is stored in JSON and these selects will also let you do arthimetic operations.
 SELECT s.InvoiceNumber, 
     s.SaleDate,
     s.SalePrice - s.Cost as GrossProfit
@@ -54,7 +54,7 @@ FROM simpleCars s
 
 
 
-
+-- Using Stores colletion
 --Both below quries will pefrom same task however in the first script we are aliasing the current collections to mystore and in 2nd as c
 SELECT * from mystore
 
@@ -83,7 +83,7 @@ SELECT *
 FROM m.address.location
 
 
-
+--Using Families collection
 -- Alias the subset to filter
 -- within the subset
 SELECT *
@@ -164,6 +164,7 @@ SELECT VALUE
  SUM(ARRAY_LENGTH(c.children))
 FROM c
 
+--Using Stores collection
 --IIF or Ternary ?
 SELECT
     c.name,
