@@ -11,7 +11,7 @@ Data migration tool download
 http://www.microsoft.com/en-us/download/details.aspx?id=46436
 
 MSSQL Instance access
-Instance Name: win10.centralindia.cloudapp.azure.com
+Instance Name: 
 UID: TestMS
 PWD: TestMS
 
@@ -33,12 +33,8 @@ https://www.generatedata.com/
 Multi-master conflict resolve
 https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-conflicts
 
-
 DocDB JavaScript server API for intelisense
 https://github.com/Azure/azure-cosmosdb-js-server/blob/master/utils/DocDbWrapperScript.js
-
-Code download Link
-https://www.dropbox.com/s/g0lbzyeypg9i6ti/CosmosdotNetDemos.zip?dl=0
 
 Feed back link, Please leave a review 
 http://erp.optimistikinfo.com/participantsfeedback/feedback/92
