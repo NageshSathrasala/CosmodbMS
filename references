@@ -10,6 +10,9 @@ https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
 Data migration tool download
 http://www.microsoft.com/en-us/download/details.aspx?id=46436
 
+Data migration tool github repo
+https://github.com/azure/azure-documentdb-datamigrationtool
+
 MSSQL Instance access
 Instance Name: 
 UID: TestMS
