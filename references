@@ -33,6 +33,9 @@ https://www.generatedata.com/
 Multi-master conflict resolve
 https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-conflicts
 
+.NET SDK SQL API Samples
+https://github.com/Azure/azure-cosmos-dotnet-v2/tree/master/samples/code-samples
+
 DocDB JavaScript server API for intelisense
 https://github.com/Azure/azure-cosmosdb-js-server/blob/master/utils/DocDbWrapperScript.js
 
