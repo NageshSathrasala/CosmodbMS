@@ -18,6 +18,7 @@ namespace CDemo1
         public static Uri dburi = UriFactory.CreateDatabaseUri("ADW");
         public static Uri mystoreColUri = UriFactory.CreateDocumentCollectionUri("ADW", "stores");
 
+
         private static void Main(string[] args)
         {
             var endpoint = ConfigurationManager.AppSettings["CosmosDbEndpoint"];
@@ -246,7 +247,7 @@ Q Quit
             Console.WriteLine();
             Console.WriteLine(">>> Creating New ducument into mystore collection of ADW <<< ");
             //var opt = new RequestOptions {ConsistencyLevel= ConsistencyLevel.Eventual };
-            //var opt = new RequestOptions { IndexingDirective = IndexingDirective.Exclude };
+            //var opt = new RequestOptions {IndexingDirective = IndexingDirective.Exclude };
 
             dynamic documentdef = new {
                 name = "New Customer 1",
@@ -303,6 +304,7 @@ Q Quit
 
             var documents = client.CreateDocumentQuery(mystoreColUri, sql).ToList();
             Console.WriteLine($"Found {documents.Count} number of documents");
+            
             foreach (var doc in documents)
             {
                 Console.WriteLine($" ID: {doc.id}; Name: {doc.name}");
@@ -362,7 +364,7 @@ Q Quit
             Console.WriteLine();
 
             var sql = "SELECT * FROM c";
-            var options = new FeedOptions { EnableCrossPartitionQuery = true };
+            var options = new FeedOptions { EnableCrossPartitionQuery = true, MaxItemCount=30 };
 
             var query = client.CreateDocumentQuery(mystoreColUri, sql, options).AsDocumentQuery();
 
@@ -371,9 +373,11 @@ Q Quit
                 var documents = await query.ExecuteNextAsync();
                 Console.WriteLine($"Number of RU's Used {documents.RequestCharge}");
                 foreach (var doc in documents)
-                {
+                { 
                     Console.WriteLine($" Id: {doc.id}; Name: {doc.name};");
+                    
                 }
+                Console.WriteLine($" count: {documents.Count};");
             }
             Console.WriteLine();
         }

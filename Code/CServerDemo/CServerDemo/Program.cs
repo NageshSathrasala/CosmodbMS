@@ -229,6 +229,7 @@ Q       To Quit");
             {
                 var result = await client.ExecuteStoredProcedureAsync<spBulkDeleteResponse>(uri, options, sql);
                 var response = result.Response;
+
                 continuationFlag = response.ContinuationFlag;
                 var deleted = response.Count;
                 totalDeleted += deleted;

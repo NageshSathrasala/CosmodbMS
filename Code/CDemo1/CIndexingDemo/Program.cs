@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using System.Configuration;
@@ -42,6 +40,10 @@ namespace CIndexingDemo
                     {
                         UseLazyIndexing(client).Wait();
                     }
+                    else if (demoid == "IPC")
+                    {
+                        ExcludePathsFromIndex(client).Wait();
+                    }
                     else if (demoid == "Q")
                     {
                         break;
@@ -73,6 +75,7 @@ namespace CIndexingDemo
 
 EDI Exclude Document From Index
 LIC Create collection with Lazy indxing
+IPC Craete collection with indexing path.
 Q Quit
 ");
         }
@@ -150,5 +153,124 @@ Q Quit
 
             await client.DeleteDocumentCollectionAsync(collection.SelfLink);
         }
+
+        private static async Task ExcludePathsFromIndex(DocumentClient client)
+        {
+            string collectionId = string.Format(CultureInfo.InvariantCulture, "ExcludePathsFromIndex");
+            var collectionUri = UriFactory.CreateDocumentCollectionUri("ADW", collectionId);
+
+            Console.WriteLine("Exclude specified paths from document index");
+
+            var collDefinition = new DocumentCollection { Id = collectionId };
+
+            collDefinition.IndexingPolicy.IncludedPaths.Add(new IncludedPath { Path = "/*" });  // Special manadatory path of "/*" required to denote include entire tree
+            collDefinition.IndexingPolicy.ExcludedPaths.Add(new ExcludedPath { Path = "/metaData/*" });   // exclude metaData node, and anything under it
+            collDefinition.IndexingPolicy.ExcludedPaths.Add(new ExcludedPath { Path = "/subDoc/nonSearchable/*" });  // exclude ONLY a part of subDoc    
+            collDefinition.IndexingPolicy.ExcludedPaths.Add(new ExcludedPath { Path = "/\"excludedNode\"/*" }); // exclude excludedNode node, and anything under it
+
+            // The effect of the above IndexingPolicy is that only id, foo, and the subDoc/searchable are indexed
+
+            var result = await client.CreateDocumentCollectionAsync(dburi, collDefinition);
+            var collection = result.Resource;
+            Console.WriteLine("Collection {0} created with index policy \n{1}", collection.Id, collection.IndexingPolicy);
+
+            int numDocs = 250;
+            Console.WriteLine("Creating {0} documents", numDocs);
+            for (int docIndex = 0; docIndex < numDocs; docIndex++)
+            {
+                dynamic dyn = new
+                {
+                    id = "doc" + docIndex,
+                    foo = "bar" + docIndex,
+                    metaData = "meta" + docIndex,
+                    subDoc = new { searchable = "searchable" + docIndex, nonSearchable = "value" + docIndex },
+                    excludedNode = new { subExcluded = "something" + docIndex, subExcludedNode = new { someProperty = "value" + docIndex } }
+                };
+                Document created = await client.CreateDocumentAsync(collection.SelfLink, dyn);
+                Console.WriteLine("Creating document with id {0}", created.Id);
+            }
+
+            // Querying for a document on either metaData or /subDoc/subSubDoc/someProperty will be expensive since they do not utilize the index,
+            // but instead are served from scan automatically.
+            int queryDocId = numDocs / 2;
+            QueryStats queryStats = await GetQueryResult(collection, string.Format(CultureInfo.InvariantCulture, "SELECT * FROM root r WHERE r.metaData='meta{0}'", queryDocId), client);
+            Console.WriteLine("Query on metaData returned {0} results", queryStats.Count);
+            Console.WriteLine("Query on metaData consumed {0} RUs", queryStats.RequestCharge);
+
+            queryStats = await GetQueryResult(collection, string.Format(CultureInfo.InvariantCulture, "SELECT * FROM root r WHERE r.subDoc.nonSearchable='value{0}'", queryDocId), client);
+            Console.WriteLine("Query on /subDoc/nonSearchable returned {0} results", queryStats.Count);
+            Console.WriteLine("Query on /subDoc/nonSearchable consumed {0} RUs", queryStats.RequestCharge);
+
+            queryStats = await GetQueryResult(collection, string.Format(CultureInfo.InvariantCulture, "SELECT * FROM root r WHERE r.excludedNode.subExcludedNode.someProperty='value{0}'", queryDocId), client);
+            Console.WriteLine("Query on /excludedNode/subExcludedNode/someProperty returned {0} results", queryStats.Count);
+            Console.WriteLine("Query on /excludedNode/subExcludedNode/someProperty cost {0} RUs", queryStats.RequestCharge);
+
+            // Querying for a document using food, or even subDoc/searchable > consume less RUs because they were not excluded
+            queryStats = await GetQueryResult(collection, string.Format(CultureInfo.InvariantCulture, "SELECT * FROM root r WHERE r.foo='bar{0}'", queryDocId), client);
+            Console.WriteLine("Query on /foo returned {0} results", queryStats.Count);
+            Console.WriteLine("Query on /foo cost {0} RUs", queryStats.RequestCharge);
+
+            queryStats = await GetQueryResult(collection, string.Format(CultureInfo.InvariantCulture, "SELECT * FROM root r WHERE r.subDoc.searchable='searchable{0}'", queryDocId), client);
+            Console.WriteLine("Query on /subDoc/searchable returned {0} results", queryStats.Count);
+            Console.WriteLine("Query on /subDoc/searchable cost {0} RUs", queryStats.RequestCharge);
+
+            //Cleanup
+            await client.DeleteDocumentCollectionAsync(collectionUri);
+        }
+
+        struct QueryStats
+        {
+            public QueryStats(int count, double requestCharge)
+            {
+                Count = count;
+                RequestCharge = requestCharge;
+            }
+
+            public readonly int Count;
+            public readonly double RequestCharge;
+        };
+
+        private static async Task<QueryStats> GetQueryResult(DocumentCollection collection, string query, DocumentClient client)
+        {
+            try
+            {
+                IDocumentQuery<dynamic> documentQuery = client.CreateDocumentQuery(
+                    collection.SelfLink,
+                    query,
+                    new FeedOptions
+                    {
+                        PopulateQueryMetrics = true,
+                        MaxItemCount = -1
+                    }).AsDocumentQuery();
+
+                FeedResponse<dynamic> response = await documentQuery.ExecuteNextAsync();
+                return new QueryStats(response.Count, response.RequestCharge);
+            }
+            catch (Exception e)
+            {
+                LogException(e);
+                return new QueryStats(0, 0.0);
+            }
+        }
+
+        private static void LogException(Exception e)
+        {
+            ConsoleColor color = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Exception baseException = e.GetBaseException();
+            if (e is DocumentClientException)
+            {
+                DocumentClientException de = (DocumentClientException)e;
+                Console.WriteLine("{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+            }
+            else
+            {
+                Console.WriteLine("Error: {0}, Message: {1}", e.Message, baseException.Message);
+            }
+
+            Console.ForegroundColor = color;
+        }
+
     }
 }
