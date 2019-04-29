@@ -1,5 +1,4 @@
 ﻿
-
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
@@ -23,8 +22,9 @@ namespace CUserPermissionDemo
         private static DocumentClient client;
 
         //Assign a id for your database & collection 
-        private static readonly string DatabaseName = "ADW";
+        private static readonly string DatabaseName = "auth-samples";
         private static readonly string CollectionName = "auth-samples";
+        public static Uri mystoreColUri = UriFactory.CreateDocumentCollectionUri("auth-samples", "COL1");
 
         //Read the DocumentDB endpointUrl and authorisationKeys from config
         //These values are available from the Azure Management Portal on the DocumentDB Account Blade under "Keys"
@@ -151,6 +151,7 @@ namespace CUserPermissionDemo
                 Id = Guid.NewGuid().ToString("N"),
                 PermissionMode = mode,
                 ResourceLink = resourceLink
+                
             };
 
             if (resourcePartitionKey != null)
@@ -158,12 +159,44 @@ namespace CUserPermissionDemo
                 permission.ResourcePartitionKey = new PartitionKey(resourcePartitionKey);
             }
 
-            var result = await client.CreatePermissionAsync(userLink, permission);
+            //To set resource token expair to 5 hours, value is in seconds
+            var ropt = new RequestOptions { ResourceTokenExpirySeconds = 18000 };
+            var result = await client.CreatePermissionAsync(userLink, permission, ropt);
             //ResourceResponse<Permission> response = result.Resource;
 
             return result.Resource;
         }
 
+        private static async Task AttemptReadFromPartitione(string collectionLinks, Permission permissions)
+        {
+            
+            using (DocumentClient client = new DocumentClient(new Uri(endpointUrl), permissions.Token))
+            {
+                
+
+                //read collection 1 > should succeed
+
+                var sql = "SELECT * FROM c where c.partitionKey = 'partitionKey1'";
+                
+
+                var query = client.CreateDocumentQuery(mystoreColUri, sql).AsDocumentQuery();
+
+                while (query.HasMoreResults)
+                {
+                    var documents = await query.ExecuteNextAsync();
+                    Console.WriteLine($"Number of RU's Used {documents.RequestCharge}");
+                    foreach (var doc in documents)
+                    {
+                        Console.WriteLine($" Id: {doc.id}; Name: {doc.id};");
+
+                    }
+                    Console.WriteLine($" count: {documents.Count};");
+                }
+                Console.WriteLine();
+            }
+
+            return;
+        }
         private static async Task AttemptReadFromTwoCollections(List<string> collectionLinks, List<Permission> permissions)
         {
             //Now, we're going to use multiple permission tokens.

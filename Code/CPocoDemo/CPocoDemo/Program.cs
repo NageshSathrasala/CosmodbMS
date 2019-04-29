@@ -96,6 +96,7 @@ Q Quit
             Console.WriteLine(">>> Create Documents <<<");
             Console.WriteLine();
 
+ 
             var documentDefPoco = new Customer
             {
                 Name = "New Customer 3",
@@ -132,6 +133,8 @@ Q Quit
             //       Once again, refer to the Queries project for more information and examples of this
             //******************************************************************************************************************
             Console.WriteLine("Querying for a document using its City property");
+            //To set max degree of parallelism and populate Query Metrics this will help get query execution stats related information.
+            //var opt = new FeedOptions { MaxDegreeOfParallelism = 4, PopulateQueryMetrics = true };
 
             Customer CustIns = client.CreateDocumentQuery<Customer>(mystoreColUri)
                 .Where(ci => ci.Address.CountryRegionName == "India" && ci.Address.Location.City == "Bangalore")

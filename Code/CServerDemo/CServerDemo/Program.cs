@@ -17,7 +17,7 @@ namespace CServerDemo
     public static class Program
     {
         public static string DBName = "ADW";
-        public static string CollectionName = "mynewstore";
+        public static string CollectionName = "mynewstores";
         public static Uri mycoluri = UriFactory.CreateDocumentCollectionUri(DBName, CollectionName);
         
 
@@ -160,13 +160,13 @@ Q       To Quit");
                 name = "John Doe",
                 address = new
                 {
-                    countryRegionName = "United States",
+                    countryRegionName = "India",
                     postalCode = "12345"
                 }
             };
 
             var uri = UriFactory.CreateStoredProcedureUri(DBName, CollectionName, "spSetNorthAmerica");
-            var opt = new RequestOptions { PartitionKey = new PartitionKey("12345") };
+            var opt = new RequestOptions { PartitionKey = new PartitionKey("India") };
             var result = await client.ExecuteStoredProcedureAsync<object>(uri, opt, documentDefinition, true);
             var doc = result.Response;
 
@@ -175,8 +175,8 @@ Q       To Quit");
             Console.Write($"Country = {doc.address.countryRegionName}");
             Console.Write($"Is NA = {doc.address.isNorthAmerica}");
 
-            string documentLink = doc._self;
-            await client.DeleteDocumentAsync(documentLink, opt);
+            //string documentLink = doc._self;
+            //await client.DeleteDocumentAsync(documentLink, opt);
         }
 
         private async static Task Execute_spBulkinsert(DocumentClient client)

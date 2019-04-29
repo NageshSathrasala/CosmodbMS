@@ -25,6 +25,12 @@ namespace CDemo1
             var masterKey = ConfigurationManager.AppSettings["CosmosDbMasterKey"];
             var client = new DocumentClient(new Uri(endpoint), masterKey);
 
+            // Set the read region selection preference order
+            //connectionPolicy.PreferredLocations.Add(LocationNames.EastUS); // first preference
+            //connectionPolicy.PreferredLocations.Add(LocationNames.NorthEurope); // second preference
+            //connectionPolicy.PreferredLocations.Add(LocationNames.SoutheastAsia); // third preference
+
+
             try
             {
                 ShowMenu();
