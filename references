@@ -13,8 +13,11 @@ http://www.microsoft.com/en-us/download/details.aspx?id=46436
 Data migration tool github repo
 https://github.com/azure/azure-documentdb-datamigrationtool
 
+Azure data studio
+https://github.com/mingaliu/DocumentDBStudio/releases
+
 MSSQL Instance access
-Instance Name: 
+Instance Name: 52.172.134.254
 UID: TestMS
 PWD: TestMS
 
@@ -43,7 +46,7 @@ DocDB JavaScript server API for intelisense
 https://github.com/Azure/azure-cosmosdb-js-server/blob/master/utils/DocDbWrapperScript.js
 
 Feed back link, Please leave a review 
-http://erp.optimistikinfo.com/participantsfeedback/feedback/92
+http://erp.optimistikinfo.com/participantsfeedback/feedback/93
 
 Apache Casendra introdution video:
 https://www.youtube.com/watch?v=NFc-x0qfg6U&feature=youtu.be 
