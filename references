@@ -36,6 +36,9 @@ https://www.documentdb.com/capacityplanner
 Sample doucment generator
 https://www.generatedata.com/
 
+Change Processor
+https://github.com/azure/azure-documentdb-changefeedprocessor-dotnet
+
 Multi-master conflict resolve
 https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-manage-conflicts
 
